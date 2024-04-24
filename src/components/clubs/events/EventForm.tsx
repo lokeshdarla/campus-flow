@@ -114,7 +114,7 @@ export function EventHostForm() {
                 Poster <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="file" type='file' {...field} />
+                <Input placeholder="file" type='file' />
               </FormControl>
               <FormMessage />
             </FormItem>
