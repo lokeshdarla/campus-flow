@@ -2,7 +2,6 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 
 import { db } from "../../db/db";
-import { Users } from "../../db/schema";
 
 const GOOGLE_AUTH_URL = "https://oauth2.googleapis.com/token";
 const GOOGLE_USER_INFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
@@ -59,6 +58,7 @@ export const fetchGoogleUserInfo = async (accessToken: string) => {
 interface User {
   id: string;
   email: string;
+  displayName?: string;
   profile_url: string | null;
   role: "CLUB" | "STUDENT";
   created_at: Date | null;
@@ -74,8 +74,19 @@ export const getUserByEmail = async (
   }
 };
 
-export const generateJWTToken = (user: User): string => {
+export const generateJWTToken = async (user: User): Promise<string> => {
   const jwtSecret = process.env.JWT_SECRET;
+  if (user.role === 'STUDENT') {
+    const dbStudent = await db.query.Students.findFirst({ where: (Students, { eq }) => eq(Students.id, user.id) });
+    if (dbStudent) {
+      user.displayName = dbStudent.studentName;
+    }
+  } else {
+    const dbClub = await db.query.Clubs.findFirst({ where: (Clubs, { eq }) => eq(Clubs.id, user.id) });
+    if (dbClub) {
+      user.displayName = dbClub.name;
+    }
+  }
 
   if (!jwtSecret) {
     throw new Error("JWT Secret is not properly configured");
@@ -85,6 +96,7 @@ export const generateJWTToken = (user: User): string => {
     return jwt.sign(
       {
         id: user.id,
+        displayName: user.displayName,
         emailAddress: user.email,
         photoURL: user.profile_url,
         role: user.role,
