@@ -11,10 +11,10 @@ export const CLUB_MEMBER_STATUS = pgEnum('CLUB_MEMBER_STATUS', ['MEMBER', 'CO-CO
 
 export const Users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
-  email: varchar('email', { length: 20 }).notNull(),
+  email: varchar('email').notNull(),
   profile_url: varchar('profileImage'),
   role: ROLE('role').notNull(),
-  created_at: date('date'),
+  created_at: timestamp('created_at').defaultNow(),
 });
 
 export const Clubs = pgTable("Club_details", {

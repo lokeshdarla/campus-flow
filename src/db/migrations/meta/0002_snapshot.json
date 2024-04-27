@@ -1,0 +1,537 @@
+{
+  "id": "d0351b7a-2dc6-4bcb-bbcd-074beb3d8aaa",
+  "prevId": "fcf20a52-0b8e-4039-8525-c9f720743b11",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "ClubMemberStatus": {
+      "name": "ClubMemberStatus",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "club_id": {
+          "name": "club_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "CLUB_MEMBER_STATUS",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ClubMemberStatus_club_id_Club_details_id_fk": {
+          "name": "ClubMemberStatus_club_id_Club_details_id_fk",
+          "tableFrom": "ClubMemberStatus",
+          "tableTo": "Club_details",
+          "columnsFrom": [
+            "club_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Club_details": {
+      "name": "Club_details",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "club_name": {
+          "name": "club_name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Club_details_id_users_id_fk": {
+          "name": "Club_details_id_users_id_fk",
+          "tableFrom": "Club_details",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "eventResponses": {
+      "name": "eventResponses",
+      "schema": "",
+      "columns": {
+        "registration_id": {
+          "name": "registration_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "EVENT_REGISTERED_STATUS",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "from_club": {
+          "name": "from_club",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "registered_at": {
+          "name": "registered_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "eventResponses_event_id_Events_events_fk": {
+          "name": "eventResponses_event_id_Events_events_fk",
+          "tableFrom": "eventResponses",
+          "tableTo": "Events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "events"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "eventResponses_student_id_users_id_fk": {
+          "name": "eventResponses_student_id_users_id_fk",
+          "tableFrom": "eventResponses",
+          "tableTo": "users",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Events": {
+      "name": "Events",
+      "schema": "",
+      "columns": {
+        "events": {
+          "name": "events",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "club_id": {
+          "name": "club_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_name": {
+          "name": "event_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_description": {
+          "name": "event_description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_url": {
+          "name": "image_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_date": {
+          "name": "event_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_start_time": {
+          "name": "event_start_time",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "event_end_time": {
+          "name": "event_end_time",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "EVENT_STATUS",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Events_club_id_Club_details_id_fk": {
+          "name": "Events_club_id_Club_details_id_fk",
+          "tableFrom": "Events",
+          "tableTo": "Club_details",
+          "columnsFrom": [
+            "club_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Events_event_name_unique": {
+          "name": "Events_event_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "event_name"
+          ]
+        }
+      }
+    },
+    "Recruitments": {
+      "name": "Recruitments",
+      "schema": "",
+      "columns": {
+        "recruiments": {
+          "name": "recruiments",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "club_id": {
+          "name": "club_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "descriptions": {
+          "name": "descriptions",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "RECRUITMENT_STATUS",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Recruitments_club_id_Club_details_id_fk": {
+          "name": "Recruitments_club_id_Club_details_id_fk",
+          "tableFrom": "Recruitments",
+          "tableTo": "Club_details",
+          "columnsFrom": [
+            "club_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Student_details": {
+      "name": "Student_details",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reg_id": {
+          "name": "reg_id",
+          "type": "varchar(13)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "studentName": {
+          "name": "studentName",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "batch": {
+          "name": "batch",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "section": {
+          "name": "section",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "name": "gender",
+          "type": "GENDER",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "residence": {
+          "name": "residence",
+          "type": "RESIDENCE_TYPE",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "club_status_id": {
+          "name": "club_status_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Student_details_id_users_id_fk": {
+          "name": "Student_details_id_users_id_fk",
+          "tableFrom": "Student_details",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "Student_details_club_status_id_ClubMemberStatus_id_fk": {
+          "name": "Student_details_club_status_id_ClubMemberStatus_id_fk",
+          "tableFrom": "Student_details",
+          "tableTo": "ClubMemberStatus",
+          "columnsFrom": [
+            "club_status_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profileImage": {
+          "name": "profileImage",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "ROLE",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {
+    "CLUB_MEMBER_STATUS": {
+      "name": "CLUB_MEMBER_STATUS",
+      "values": {
+        "MEMBER": "MEMBER",
+        "CO-CONVENER": "CO-CONVENER",
+        "CONVENOR": "CONVENOR"
+      }
+    },
+    "EVENT_REGISTERED_STATUS": {
+      "name": "EVENT_REGISTERED_STATUS",
+      "values": {
+        "APPLIED": "APPLIED",
+        "ACCEPTED": "ACCEPTED",
+        "ATTENDED": "ATTENDED",
+        "NOT_ATTENDED": "NOT_ATTENDED"
+      }
+    },
+    "EVENT_STATUS": {
+      "name": "EVENT_STATUS",
+      "values": {
+        "NOT_STARTED": "NOT_STARTED",
+        "HAPPENING": "HAPPENING",
+        "COMPLETED": "COMPLETED",
+        "POSTPONED": "POSTPONED"
+      }
+    },
+    "GENDER": {
+      "name": "GENDER",
+      "values": {
+        "MALE": "MALE",
+        "FEMALE": "FEMALE"
+      }
+    },
+    "RECRUITMENT_APPLICATION_STATUS": {
+      "name": "RECRUITMENT_APPLICATION_STATUS",
+      "values": {
+        "APPLIED": "APPLIED",
+        "SCHEDULED_INTERVIEW": "SCHEDULED_INTERVIEW",
+        "SELECTED": "SELECTED",
+        "REJECTED": "REJECTED"
+      }
+    },
+    "RECRUITMENT_STATUS": {
+      "name": "RECRUITMENT_STATUS",
+      "values": {
+        "HIRING": "HIRING",
+        "NOT_HIRING": "NOT_HIRING"
+      }
+    },
+    "RESIDENCE_TYPE": {
+      "name": "RESIDENCE_TYPE",
+      "values": {
+        "DAYSCHOLAR": "DAYSCHOLAR",
+        "HOSTELER": "HOSTELER"
+      }
+    },
+    "ROLE": {
+      "name": "ROLE",
+      "values": {
+        "CLUB": "CLUB",
+        "STUDENT": "STUDENT"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
