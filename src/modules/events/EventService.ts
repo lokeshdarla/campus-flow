@@ -1,6 +1,6 @@
 import express from "express";
 import { db } from "../../db/db";
-import { Events } from "../../db/schema";
+import { Clubs, Events, Users } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 type EventType = typeof Events.$inferInsert;
@@ -29,11 +29,34 @@ export const EventService = {
   getAllEvents: async () => {
     try {
       const events = await db.query.Events.findMany();
-      return events;
+      const eventsWithClubInfo = [];
+      for (const event of events) {
+        const clubInfo = await db.query.Clubs.findFirst({
+          where: (Clubs, { eq }) => (eq(Clubs.id, event.club_id))
+        });
+        const clubDetails = await db.query.Users.findFirst({
+          where: (Users, { eq }) => (eq(Users.id, event.club_id))
+        });
+
+        if (clubInfo) {
+          const data = {
+            eventInfo: event,
+            clubInfo: {
+              name: clubInfo.name,
+              description: clubInfo.description,
+              email: clubDetails?.email,
+              profile_url: clubDetails?.profile_url
+            }
+          }
+          eventsWithClubInfo.push(data);
+        }
+      }
+      return eventsWithClubInfo;
     } catch (error) {
       throw error;
     }
   },
+
 
   getClubEvents: async (club_id: string) => {
     try {

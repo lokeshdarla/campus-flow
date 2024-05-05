@@ -21,6 +21,7 @@ EventRouter.get('/club-events', async (req: Request, res: Response) => {
 
 EventRouter.get('/all-events', async (req: Request, res: Response) => {
   const events = await EventService.getAllEvents();
+
   res.status(200).json(events);
 });
 
