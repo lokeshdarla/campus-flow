@@ -3,6 +3,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ExploreEvents from '@/components/student/events/Explore';
 import RegisteredEvents from '@/components/student/events/Registered';
+import { EventDialog } from '@/components/clubs/events/EventDialog';
 
 const EventsPage = () => {
   return (
@@ -12,6 +13,7 @@ const EventsPage = () => {
           <h4 className="font-sans text-lg font-semibold tracking-normal text-blue-700">
             Events
           </h4>
+
         </div>
       </div>
       <div className='relative'>

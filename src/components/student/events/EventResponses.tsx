@@ -221,8 +221,8 @@ export function EventResponses() {
   })
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
+    <div className="h-full w-[400px] md:w-full overflow-scroll px-5 bg-white">
+      <div className="flex flex-wrap items-center justify-between gap-3 py-3">
         <Input
           placeholder="Filter Registration Id"
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}

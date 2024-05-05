@@ -1,67 +1,64 @@
-// import React, { Component } from 'react';
-// import QrScanner from "qr-scanner";
+'use client'
+import React, { useState, useRef } from 'react';
+import { Scanner } from '@yudiel/react-qr-scanner'
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from "@/components/ui/dialog"
+import { BsQrCodeScan } from "react-icons/bs";
+import { toast } from "@/components/ui/use-toast"
 
-// class Test extends Component {
-//   constructor(props: any) {
-//     super(props);
-//     this.state = {
-//       delay: 100,
-//       result: 'No result',
-//       scanning: false, // Add scanning state to control the scanning process
-//     };
-
-//     this.handleScan = this.handleScan.bind(this);
-//     this.handleError = this.handleError.bind(this);
-//     this.startScan = this.startScan.bind(this);
-//     this.stopScan = this.stopScan.bind(this);
-//   }
-
-//   handleScan(data) {
-//     if (data) {
-//       this.setState({
-//         result: data,
-//       });
-//     }
-//   }
-
-//   handleError(err) {
-//     console.error(err);
-//   }
-
-//   startScan() {
-//     this.setState({
-//       scanning: true,
-//     });
-//   }
-
-//   stopScan() {
-//     this.setState({
-//       scanning: false,
-//     });
-//   }
-
-//   render() {
-//     const previewStyle = {
-//       height: 240,
-//       width: 320,
-//     };
-
-//     return (
-//       <div>
-//         {this.state.scanning ? (
-//           <QrReader
-//             delay={this.state.delay}
-//             style={previewStyle}
-//             onError={this.handleError}
-//             onScan={this.handleScan}
-//           />
-//         ) : null}
-//         <p>{this.state.result}</p>
-//         <button onClick={this.startScan}>Start Scan</button>
-//         <button onClick={this.stopScan}>Stop Scan</button>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Test;
+export function QRScanner() {
+  const [qrCodeData, setQRCodeData] = useState<string>();
+  const handleAttendace = () => {
+    toast({
+      title: `Marked Attendance for  ${qrCodeData}`,
+      description: "Attendance marked for the event",
+    })
+    setQRCodeData('');
+  }
+    ;
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline"><BsQrCodeScan className="mr-2" /> Scand Qr</Button>
+      </DialogTrigger>
+      <DialogContent className="w-[425px] flex flex-col items-center">
+        <DialogHeader>
+          <DialogTitle>Scan to Mark Attendance</DialogTitle>
+          <DialogDescription className=''>
+            Once QR scanned below admission number will be displayed verify it and mark Attendance.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="w-full max-w-md overflow-hidden rounded-md">
+          <Scanner
+            onResult={(text, result) => {
+              setQRCodeData(text);
+              console.log(text, result);
+            }}
+            onError={(error) => console.log(error?.message)}
+          />
+        </div>
+        <DialogFooter className=''>
+          <div className='flex flex-col items-center gap-2 justify-center'>
+            <div>
+              {qrCodeData?.length != 0 && <p>Reg Number: {qrCodeData}</p>}
+            </div>
+            <div>
+              {qrCodeData?.length != 0 ?
+                <DialogClose asChild><Button variant="outline" onClick={handleAttendace}>Mark Attendance</Button></DialogClose>
+                : <p>Scan the QR Properly</p>}
+            </div>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog >
+  )
+}

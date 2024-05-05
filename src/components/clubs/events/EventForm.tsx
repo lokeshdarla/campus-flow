@@ -1,168 +1,26 @@
-'use client'
+import React from 'react'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
-import { useMutation, useQueryClient } from 'react-query'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../ui/select'
-import { Close } from '@radix-ui/react-dialog'
-
-interface EventHostingForm {
-  name: string
-  description: string
-  image: File
-  venue: string
-  EventDate: string
-}
-
-export function EventHostForm() {
-  // const queryClient = useQueryClient()
-
-  const form = useForm<EventHostingForm>({
-    defaultValues: {
-      name: '',
-      description: '',
-      venue: '',
-      EventDate: '',
-    },
-  })
-
-  // const mutation = useMutation(
-  //   (values: OutingRequestForm) => {
-  //     const formattedValues = {
-  //       destination: values.destination,
-  //       outingType: values.outingType,
-  //       description: values.description,
-  //       requestedOutDate: new Date().toISOString(),
-  //       requestedInDate: new Date(values.RequestedInDate).toISOString(),
-  //     }
-
-  //     // return axios.post(studentApiPaths.createOuting.apiPath, formattedValues)
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       form.reset()
-  //       // queryClient.invalidateQueries(studentApiPaths.activeOuting.key)
-  //       // queryClient.invalidateQueries(studentApiPaths.allOutings.key)
-  //       close()
-  //     },
-  //   },
-  // )
-
+const EventForm = () => {
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((values) => {
-          console.log(values);
-          form.reset();
-          Close
+    <form className=" ">
+      <div className="mb-5">
+        <label htmlFor="event_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Name</label>
+        <input type="text" id="event_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="event_description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Description</label>
+        <input type="text" id="event_description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+      </div>
+      <div className="flex items-start mb-5">
+        <div className="flex items-center h-5">
+          <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+        </div>
+        <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+      </div>
+      <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    </form>
 
-        })}
-        className="space-y-4"
-      >
-        <FormField
-          name="name"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Name <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="Event Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="description"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Description of Event <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input placeholder=" Description of Event" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="image"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Poster <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="file" type='file' />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-
-        <FormField
-          name="EventDate"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Event Date <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  type="datetime-local"
-                  placeholder="Event Date"
-                  {...field}
-                  min={new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000)
-                    .toISOString()
-                    .slice(0, 16)}
-
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="venue"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Venue <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input placeholder=" Venue of Event" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Create Event</Button>
-      </form>
-    </Form>
   )
 }
+
+export default EventForm

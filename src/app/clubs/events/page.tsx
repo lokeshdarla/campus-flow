@@ -12,6 +12,7 @@ export default function TrackOutingPage() {
         <h4 className=" font-sans text-lg font-semibold tracking-normal text-blue-700">
           Events
         </h4>
+        <EventDialog />
       </div>
       <div className="p-2">
         <Tabs defaultValue="active-outpass" className="w-full">
@@ -20,7 +21,7 @@ export default function TrackOutingPage() {
             <TabsTrigger value="all-outings">Event History</TabsTrigger>
           </TabsList>
           <TabsContent value="active-outpass">
-            {/* <EventDialog /> */}
+
             <ActiveEvent />
           </TabsContent>
           <TabsContent value="all-outings">

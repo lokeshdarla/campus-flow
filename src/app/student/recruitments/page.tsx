@@ -5,22 +5,6 @@ import RegisteredEvents from '@/components/student/events/Registered';
 import AllRecruitments from '@/components/student/recruitments/AllRecruitments';
 
 const EventsPage = () => {
-  const [selectedImage, setSelectedImage] = useState<string>('');
-
-  const handleFileChange = (event: any) => {
-    try {
-      const file = event.target.files[0]; // Get the first selected file
-      if (file) {
-        // Create a URL for the selected image file
-        const imageUrl = URL.createObjectURL(file);
-        setSelectedImage(imageUrl);
-      } else {
-        console.error('No file selected.');
-      }
-    } catch (error) {
-      console.error('Error handling file input:', error);
-    }
-  };
 
   return (
     <div className='h-screen'>
@@ -29,15 +13,6 @@ const EventsPage = () => {
           <h4 className="font-sans text-lg font-semibold tracking-normal text-blue-700">
             Recruitments
           </h4>
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={handleFileChange}
-              style={{ display: 'block', marginBottom: '10px' }}
-            />
-          </div>
         </div>
       </div>
       <div className='relative'>

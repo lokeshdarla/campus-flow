@@ -1,9 +1,12 @@
+'use client'
 import React from 'react'
+import { useAuth } from '@/hooks/useAuth'
 
-const page = () => {
+const Page = () => {
+  const { user, logout } = useAuth();
   return (
     <div>page</div>
   )
 }
 
-export default page
+export default Page

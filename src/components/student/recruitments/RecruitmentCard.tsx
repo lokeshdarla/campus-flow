@@ -17,7 +17,7 @@ export function RecruitmentCard() {
     <Card className="max-w-3xl">
       <CardHeader className="flex justify-between items-center flex-row">
         <div>
-          <CardTitle>Club Registration</CardTitle>
+          <CardTitle>Co-Convenor</CardTitle>
           <CardDescription>Coding Club,SRM Univeristy AP
           </CardDescription>
         </div>
