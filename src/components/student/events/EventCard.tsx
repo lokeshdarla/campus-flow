@@ -1,6 +1,8 @@
 'use client'
 import * as React from "react"
 import Image from "next/image"
+import { EventData } from "@/constants/constant"
+import { timeDifference } from "@/lib/utils"
 
 import {
   Card,
@@ -12,27 +14,27 @@ import {
 } from "@/components/ui/card"
 import { EventDialog } from "./EventDialog"
 
-export function EventCard() {
+export const EventCard: React.FC<{ event: EventData }> = ({ event }) => {
+  const { name, location, description } = event.eventInfo;
+
   return (
-    <Card className="max-w-3xl">
+    <Card className="max-w-3xl md:min-w-[720px]">
       <CardHeader className="flex justify-between items-center flex-row">
         <div>
-          <CardTitle>Case Study</CardTitle>
-          <CardDescription>SRM Univeristy AP, Vijayawada, Andhra Pradesh, India
-          </CardDescription>
+          <CardTitle>{name}</CardTitle>
+          <CardDescription>{location}</CardDescription>
         </div>
         <Image src={'/srmap_logo.png'} alt="logo" width={75} height={75} />
-
       </CardHeader>
       <CardContent>
-        <p className=" text-gray-600 dark:text-gray-300">Engage your intellect in our Case Study competition. Teams analyze real-world scenarios, presenting innovative solutions and strategies to industry challenges. </p>
+        <p className="text-gray-600 dark:text-gray-300">{description}</p>
       </CardContent>
       <CardFooter className="flex justify-between items-center">
         <div>
-          <p className="text-sm text-blue-700 hover:underline hover:cursor-pointer">Register by 27 April 2024 • Posted 14h ago</p>
+          <p className="text-sm text-blue-700 hover:underline hover:cursor-pointer">Register by {event.eventInfo.date} • Posted {timeDifference(event.eventInfo.created_at)}</p>
         </div>
-        <EventDialog />
+        <EventDialog event={event} />
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
