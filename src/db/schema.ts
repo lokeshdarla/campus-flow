@@ -46,7 +46,6 @@ export const Events = pgTable('Events', {
   club_id: uuid('club_id').references(() => Clubs.id).notNull(),
   name: varchar('event_name').notNull().unique(),
   description: varchar('event_description').notNull(),
-  image_url: varchar('image_url').notNull(),
   date: date('event_date').notNull(),
   start_time: time('event_start_time'),
   end_time: time('event_end_time'),

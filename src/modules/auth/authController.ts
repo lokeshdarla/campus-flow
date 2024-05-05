@@ -35,7 +35,7 @@ export const googleOAuthHandler = async (req: Request, res: Response) => {
     }
 
     const currentUser = user;
-    const jwtToken = generateJWTToken(currentUser);
+    const jwtToken = await generateJWTToken(currentUser);
     let redirectURL = `${frontendUrl}/student/track-outing`;
 
     switch (currentUser.role) {
@@ -43,7 +43,7 @@ export const googleOAuthHandler = async (req: Request, res: Response) => {
         redirectURL = `${frontendUrl}/student/dashboard`;
         break;
       case "CLUB":
-        redirectURL = `${frontendUrl}/club/dashboard`;
+        redirectURL = `${frontendUrl}/clubs/dashboard`;
         break;
     }
 

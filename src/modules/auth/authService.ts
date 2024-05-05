@@ -93,7 +93,7 @@ export const generateJWTToken = async (user: User): Promise<string> => {
   }
 
   try {
-    return jwt.sign(
+    const token = jwt.sign(
       {
         id: user.id,
         displayName: user.displayName,
@@ -104,8 +104,9 @@ export const generateJWTToken = async (user: User): Promise<string> => {
       jwtSecret,
       {
         expiresIn: TOKEN_EXPIRATION,
-      },
+      }
     );
+    return token;
   } catch (error) {
     throw new Error("Error generating JWT token" + error);
   }

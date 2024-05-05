@@ -3,6 +3,8 @@ import express, { Express } from "express";
 import { Request, Response } from "express";
 import { authRouter } from "./modules/auth/authRoute";
 import { userRouter } from "./modules/users/userRoute";
+import { qrRouter } from "./modules/markAttendance/qroute";
+import EventRouter from "./modules/events/EventController";
 
 export const app: Express = express();
 
@@ -17,7 +19,9 @@ app.get("/server", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth/", authRouter);
-app.use("/", userRouter)
+app.use("/", userRouter);
+app.use("/api/scan-qr", qrRouter);
+app.use("/api/events", EventRouter);
 
 const PORT = process.env.PORT || 8080;
 
