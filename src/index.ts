@@ -5,6 +5,7 @@ import { authRouter } from "./modules/auth/authRoute";
 import { userRouter } from "./modules/users/userRoute";
 import { qrRouter } from "./modules/markAttendance/qroute";
 import EventRouter from "./modules/events/EventController";
+import EventResponseRouter from "./modules/registrations/RegistrationController";
 
 export const app: Express = express();
 
@@ -22,6 +23,7 @@ app.use("/api/auth/", authRouter);
 app.use("/", userRouter);
 app.use("/api/scan-qr", qrRouter);
 app.use("/api/events", EventRouter);
+app.use("api/responses", EventResponseRouter);
 
 const PORT = process.env.PORT || 8080;
 
