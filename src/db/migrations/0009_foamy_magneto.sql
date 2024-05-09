@@ -1,7 +1,0 @@
-DO $$ BEGIN
- CREATE TYPE "RECRUITMENT_MEMBER_STATUS" AS ENUM('MEMBER', 'CO-CONVENER', 'CONVENOR');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-ALTER TABLE "Recruitments" ALTER COLUMN "role" DROP NOT NULL;
