@@ -1,26 +1,102 @@
-import React from 'react'
+'use client'
+import React, { useRef, useState } from 'react';
+import { EventCreate } from '@/constants/constant';
+import axios from 'axios';
 
 const EventForm = () => {
+  const [formData, setFormData] = useState<EventCreate>({
+    name: '',
+    description: '',
+    date: '',
+    start_time: new Date(),
+    end_time: new Date(),
+    location: '',
+  });
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const calculateMinDate = () => {
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 2);
+    return minDate.toISOString();
+  };
+
+  const calculateMaxDate = () => {
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 30);
+    return minDate.toISOString();
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const startDate = formData.start_time.toString().split('T')[0];
+    setFormData(prevFormData => ({ ...prevFormData, date: startDate }));
+
+    const accessToken = localStorage.getItem('accessToken');
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/create-event`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Event created successfully:', response.data);
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  };
+
+
+
+
   return (
-    <form className=" ">
+    <form ref={formRef
+    } className="" onSubmit={handleSubmit}>
       <div className="mb-5">
         <label htmlFor="event_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Name</label>
-        <input type="text" id="event_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
+        <input type="text" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Sample Event" required onChange={handleChange} />
       </div>
       <div className="mb-5">
         <label htmlFor="event_description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Description</label>
-        <input type="text" id="event_description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+        <input type="text" id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required onChange={handleChange} />
       </div>
-      <div className="flex items-start mb-5">
-        <div className="flex items-center h-5">
-          <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
-        </div>
-        <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+      <div className="mb-5">
+        <label htmlFor="start_time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Time</label>
+        <input
+          type="datetime-local"
+          id="start_time"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          required
+          min={calculateMinDate()}
+          max={calculateMaxDate()}
+          onChange={handleChange}
+        />
       </div>
-      <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+
+      <div className="mb-5">
+        <label htmlFor="end_time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End Time</label>
+        <input type="datetime-local" id="end_time" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required onChange={handleChange} />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
+        <input type="text" id="location" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required onChange={handleChange} />
+      </div>
+      <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Create</button>
     </form>
+  );
+};
 
-  )
-}
-
-export default EventForm
+export default EventForm;

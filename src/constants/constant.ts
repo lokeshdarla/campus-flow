@@ -23,3 +23,12 @@ export interface EventData {
   eventInfo: EventInfo;
   clubInfo: ClubInfo;
 }
+
+export interface EventCreate {
+  name: string,
+  description: string,
+  date: string,
+  start_time: Date,
+  end_time: Date,
+  location: string,
+}

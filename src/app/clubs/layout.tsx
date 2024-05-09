@@ -35,12 +35,6 @@ const links = [
     href: '/clubs/feedback',
     activeLink: '/clubs/feedback',
   },
-  {
-    label: 'Club Info',
-    icon: <IconUser size={'1.2rem'} stroke={1.75} />,
-    href: '/clubs/info',
-    activeLink: '/clubs/info',
-  },
 ]
 
 
