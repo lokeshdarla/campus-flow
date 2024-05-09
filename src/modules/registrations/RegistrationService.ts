@@ -8,9 +8,7 @@ export const RegistrationService = {
       const student = await db.query.Students.findFirst({
         where: (Students, { eq }) => eq(Students.id, student_id)
       });
-
       const from_club = !!student?.ClubStatus;
-
       const registration = await db.insert(EventResponses).values({
         event_id: event_id,
         student_id: student_id,
@@ -28,7 +26,7 @@ export const RegistrationService = {
   getAllRegistrations: async (event_id: string) => {
     try {
       const registrations = await db.query.EventResponses.findMany({
-        where: (EventResponses, { eq }) => eq(EventResponses.registration_id, event_id)
+        where: (EventResponses, { eq }) => eq(EventResponses.event_id, event_id)
       });
 
       const registrationsInfo = [];
@@ -41,6 +39,40 @@ export const RegistrationService = {
           const reg = {
             registration: registration,
             studentInfo: studentInfo
+          };
+          registrationsInfo.push(reg);
+        }
+      }
+
+      return registrationsInfo;
+    } catch (error) {
+      console.error("Error fetching registrations:", error);
+      throw error;
+    }
+  },
+
+  getMyRegistrations: async (student_id: string) => {
+    try {
+      const registrations = await db.query.EventResponses.findMany({
+        where: (EventResponses, { eq }) => eq(EventResponses.student_id, student_id)
+      });
+
+
+      const registrationsInfo = [];
+      for (const registration of registrations) {
+        const studentInfo = await db.query.Students.findFirst({
+          where: (Students, { eq }) => eq(Students.id, registration.student_id)
+        });
+
+        const eventInfo = await db.query.Events.findFirst({
+          where: (Events, { eq }) => eq(Events.id, registration.event_id)
+        })
+
+        if (studentInfo) {
+          const reg = {
+            registration: registration,
+            studentInfo: studentInfo,
+            eventInfo: eventInfo,
           };
           registrationsInfo.push(reg);
         }

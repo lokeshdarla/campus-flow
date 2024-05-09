@@ -64,6 +64,7 @@ EventRouter.use(oauthMiddleware);
 
 EventRouter.post('/create-event', async (req: Request, res: Response) => {
   const user = res.locals.user;
+  console.log(req.body)
   const event = await EventService.createEvent(user.id, req.body);
   res.status(201).json(event);
 });
