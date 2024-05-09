@@ -2,8 +2,9 @@ import express from "express";
 import { db } from "../../db/db";
 import { Clubs, Events, Users } from "../../db/schema";
 import { eq } from "drizzle-orm";
+import EventType from "../../models/Event";
 
-type EventType = typeof Events.$inferInsert;
+// type EventType = typeof Events.$inferInsert;
 
 export const EventService = {
   createEvent: async (club_id: string, EventBody: EventType) => {
@@ -12,9 +13,8 @@ export const EventService = {
         club_id: club_id,
         name: EventBody.name,
         description: EventBody.description,
-        date: EventBody.date,
-        start_time: EventBody.start_time,
-        end_time: EventBody.end_time,
+        start_time: new Date(EventBody.start_time),
+        end_time: new Date(EventBody.end_time),
         location: EventBody.location,
         status: 'NOT_STARTED',
         created_at: new Date(),
@@ -88,11 +88,8 @@ export const EventService = {
       const event = await db.update(Events).set({
         name: EventBody.name,
         description: EventBody.description,
-        date: EventBody.date,
-        start_time: EventBody.start_time,
-        end_time: EventBody.end_time,
         location: EventBody.location,
-        status: EventBody.status,
+        status: 'COMPLETED',
       }).where(eq(Events.id, id));
       if (!event) {
         throw new Error('Event not found');

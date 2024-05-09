@@ -1,14 +1,9 @@
-interface Event {
-  club_id: string;
+interface EventType {
   name: string;
   description: string;
-  date: Date;
-  start_time: Date;
-  end_time: Date;
+  start_time: string;
+  end_time: string;
   location: string;
-  status: 'NOT_STARTED' | 'HAPPENING' | 'COMPLETED' | 'POSTPONED';
-  created_at: Date;
-  updated_at: Date;
 }
 
-export default Event;
+export default EventType;

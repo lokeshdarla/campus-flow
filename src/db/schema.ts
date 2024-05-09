@@ -1,8 +1,8 @@
-import { date, integer, pgTable, uuid, varchar, boolean, pgEnum, time, timestamp } from 'drizzle-orm/pg-core';
+import { date, integer, pgTable, uuid, varchar, boolean, pgEnum, time, timestamp, unique } from 'drizzle-orm/pg-core';
 
 export const ROLE = pgEnum('ROLE', ['CLUB', 'STUDENT']);
 export const GENDER = pgEnum('GENDER', ['MALE', 'FEMALE']);
-export const RESIDENCE_TYPE = pgEnum('RESIDENCE_TYPE', ['DAYSCHOLAR', 'HOSTELER']);
+export const RESIDENCE_TYPE = pgEnum('RESIDENCE_TYPE', [' ', 'HOSTELER']);
 export const EVENT_STATUS = pgEnum('EVENT_STATUS', ['NOT_STARTED', 'HAPPENING', 'COMPLETED', 'POSTPONED']);
 export const EVENT_REGISTERED_STATUS = pgEnum('EVENT_REGISTERED_STATUS', ['APPLIED', 'ACCEPTED', 'ATTENDED', 'NOT_ATTENDED'])
 export const RECRUITMENT_STATUS = pgEnum('RECRUITMENT_STATUS', ['HIRING', 'NOT_HIRING']);
@@ -47,7 +47,6 @@ export const Events = pgTable('Events', {
   club_id: uuid('club_id').references(() => Clubs.id).notNull(),
   name: varchar('event_name').notNull().unique(),
   description: varchar('event_description').notNull(),
-  date: date('event_date').notNull(),
   start_time: timestamp('event_start_time'),
   end_time: timestamp('event_end_time'),
   location: varchar('location').notNull(),
@@ -63,7 +62,9 @@ export const EventResponses = pgTable('eventResponses', {
   status: EVENT_REGISTERED_STATUS('status'),
   from_club: boolean('from_club'),
   registered_at: timestamp('registered_at'),
-})
+}, (t) => ({
+  unq: unique().on(t.event_id, t.student_id),
+}))
 
 export const Recruitments = pgTable('Recruitments', {
   id: uuid('recruiments').primaryKey().defaultRandom(),
