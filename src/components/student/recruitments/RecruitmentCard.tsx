@@ -14,7 +14,7 @@ import { RecruitmentDialog } from "./RecruitmentDialog"
 
 export function RecruitmentCard() {
   return (
-    <Card className="max-w-3xl">
+    <Card className="max-w-3xl min-w-2xl">
       <CardHeader className="flex justify-between items-center flex-row">
         <div>
           <CardTitle>Co-Convenor</CardTitle>

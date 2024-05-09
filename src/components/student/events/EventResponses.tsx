@@ -39,87 +39,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-const data: Response[] = [
-  {
-    id: "AP22110011115",
-    name: "Lokesh Naga Sai Darla",
-    email: "lokeshnagasaidarla@srmap.edu.in",
-    year: 2022,
-    attendance: "ATTENDED"
-  },
-  {
-    id: "AP22110011116",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    year: 2023,
-    attendance: "ATTENDED"
-  },
-  {
-    id: "AP22110011117",
-    name: "Jane Smith",
-    email: "janesmith@example.com",
-    year: 2021,
-    attendance: "MISSED"
-  },
-  {
-    id: "AP22110011118",
-    name: "Alice Johnson",
-    email: "alicejohnson@example.com",
-    year: 2022,
-    attendance: "ATTENDED"
-  },
-  {
-    id: "AP22110011119",
-    name: "Bob Williams",
-    email: "bobwilliams@example.com",
-    year: 2023,
-    attendance: "MISSED"
-  },
-  {
-    id: "AP22110011120",
-    name: "Emily Davis",
-    email: "emilydavis@example.com",
-    year: 2021,
-    attendance: "ATTENDED"
-  },
-  {
-    id: "AP22110011121",
-    name: "Michael Brown",
-    email: "michaelbrown@example.com",
-    year: 2022,
-    attendance: "MISSED"
-  },
-  {
-    id: "AP22110011122",
-    name: "Sarah Garcia",
-    email: "sarahgarcia@example.com",
-    year: 2023,
-    attendance: "ATTENDED"
-  },
-  {
-    id: "AP22110011123",
-    name: "David Martinez",
-    email: "davidmartinez@example.com",
-    year: 2021,
-    attendance: "MISSED"
-  },
-  {
-    id: "AP22110011124",
-    name: "Olivia Rodriguez",
-    email: "oliviarodriguez@example.com",
-    year: 2022,
-    attendance: "ATTENDED"
-  },
-];
-
+import axios from "axios"
 
 export type Response = {
-  id: string
-  name: string
-  email: string
-  year: number
-
-  attendance: "ATTENDED" | "MISSED"
+  batch: string;
+  gender: string;
+  email: string;
+  reg_num: string;
+  registration_id: string;
+  status: string;
+  student_name: string;
 }
 
 export const columns: ColumnDef<Response>[] = [
@@ -146,17 +75,17 @@ export const columns: ColumnDef<Response>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "reg_num",
     header: "Registration Id",
     cell: ({ row }) => (
-      <div>{row.getValue("id")}</div>
+      <div>{row.getValue("reg_num")}</div>
     ),
   },
   {
-    accessorKey: "name",
+    accessorKey: "student_name",
     header: "Name",
     cell: ({ row }) => (
-      <div>{row.getValue("name")}</div>
+      <div>{row.getValue("student_name")}</div>
     ),
   },
   {
@@ -175,24 +104,51 @@ export const columns: ColumnDef<Response>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "year",
+    accessorKey: "batch",
     header: () => <div className="text-right">Batch</div>,
     cell: ({ row }) => {
-      const year = parseFloat(row.getValue("year"))
-      return <div className="text-right font-medium">{year}</div>
+      return <div className="text-right font-medium">{row.getValue("batch")}</div>
     },
   },
   {
-    accessorKey: "attendance",
+    accessorKey: "status",
     header: () => <div className="text-right">Status</div>,
     cell: ({ row }) => {
-      return <div className="text-right font-medium">{row.getValue("attendance")}</div>
+      return <div className="text-right font-medium">{row.getValue("status")}</div>
     },
   },
 
 ]
 
-export function EventResponses() {
+interface EventResponsesProps {
+  event_id: string;
+}
+
+export const EventResponses: React.FC<EventResponsesProps> = ({ event_id }) => {
+
+  const [data, setData] = React.useState<Response[]>([]);
+  React.useEffect(() => {
+    async function fetchEventResponses() {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/event-responses/${event_id}/all-registrations`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        console.log(response.data);
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching event responses:', error);
+      }
+    }
+
+    fetchEventResponses();
+    console.log(data);
+  }, [event_id]);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

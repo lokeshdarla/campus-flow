@@ -12,12 +12,6 @@ import {
 
 const links = [
   {
-    label: 'Dashboard',
-    icon: <IconHome size={'1.2rem'} stroke={1.75} />,
-    href: '/student/dashboard',
-    activeLink: '/student/dashboard',
-  },
-  {
     label: 'Recruitments',
     icon: <IconListDetails size={'1.2rem'} stroke={1.75} />,
     href: '/student/recruitments',
@@ -34,7 +28,13 @@ const links = [
     icon: <IconListCheck size={'1.2rem'} stroke={1.75} />,
     href: '/student/feedback',
     activeLink: '/student/feedback',
-  }
+  },
+  {
+    label: 'Personal Info',
+    icon: <IconUser size={'1.2rem'} stroke={1.75} />,
+    href: '/student/dashboard',
+    activeLink: '/student/dashboard',
+  },
 ]
 
 

@@ -1,9 +1,10 @@
+import { PageSubHeader } from "@/components/Layout/PageSubheader"
+import NotFound from "@/components/common/WorkingPage"
 export default function Page() {
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="text-4xl text-gray-400">
-        Hold on tight, we&apos;re working on this page.
-      </div>
+    <div>
+      <PageSubHeader pageTitle="Feedback Form" />
+      <NotFound />
     </div>
   )
 }

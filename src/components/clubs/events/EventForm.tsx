@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { EventCreate } from '@/constants/constant';
 import axios from 'axios';
+import { Close } from '@radix-ui/react-dialog';
 
 const EventForm = () => {
   const [formData, setFormData] = useState<EventCreate>({
@@ -52,9 +53,10 @@ const EventForm = () => {
     }
     console.log(formData);
 
-    // if (formRef.current) {
-    //   formRef.current.reset();
-    // }
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    Close;
   };
 
 
