@@ -10,10 +10,10 @@ UserRouter.use(oauthMiddleware);
 UserRouter.get('/getStudentInfo/', async (req: Request, res: Response) => {
   const user = res.locals.user;
   try {
-    const userInfo = await db.query.Students.findMany({
+    const userInfo = await db.query.Students.findFirst({
       where: (Users, { eq }) => eq(Users.id, user.id)
     });
-    res.status(201).json(user);
+    res.status(201).json(userInfo);
   } catch (error) {
     console.error('Error fetching data:', error);
     res.status(500).json({ error: 'Error fetching data' });

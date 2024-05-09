@@ -8,6 +8,7 @@ export const RegistrationService = {
       const student = await db.query.Students.findFirst({
         where: (Students, { eq }) => eq(Students.id, student_id)
       });
+
       const from_club = !!student?.ClubStatus;
       const registration = await db.insert(EventResponses).values({
         event_id: event_id,
@@ -34,11 +35,24 @@ export const RegistrationService = {
         const studentInfo = await db.query.Students.findFirst({
           where: (Students, { eq }) => eq(Students.id, registration.student_id)
         });
+        let user;
+        if (studentInfo) {
+          user = await db.query.Users.findFirst({
+            where: (Users, { eq }) => eq(Users.id, studentInfo?.id)
+          });
+        }
+
+
 
         if (studentInfo) {
           const reg = {
-            registration: registration,
-            studentInfo: studentInfo
+            registration_id: registration.registration_id,
+            student_name: studentInfo.studentName,
+            email: user?.email,
+            reg_num: studentInfo.reg_id,
+            batch: studentInfo.batch,
+            gender: studentInfo.gender,
+            status: registration.status
           };
           registrationsInfo.push(reg);
         }
