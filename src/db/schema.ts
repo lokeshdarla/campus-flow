@@ -2,7 +2,7 @@ import { date, integer, pgTable, uuid, varchar, boolean, pgEnum, time, timestamp
 
 export const ROLE = pgEnum('ROLE', ['CLUB', 'STUDENT']);
 export const GENDER = pgEnum('GENDER', ['MALE', 'FEMALE']);
-export const RESIDENCE_TYPE = pgEnum('RESIDENCE_TYPE', ['DAYSCHOLAR', 'HOSTELER']);
+export const RESIDENCE_TYPE = pgEnum('RESIDENCE_TYPE', [' ', 'HOSTELER']);
 export const EVENT_STATUS = pgEnum('EVENT_STATUS', ['NOT_STARTED', 'HAPPENING', 'COMPLETED', 'POSTPONED']);
 export const EVENT_REGISTERED_STATUS = pgEnum('EVENT_REGISTERED_STATUS', ['APPLIED', 'ACCEPTED', 'ATTENDED', 'NOT_ATTENDED'])
 export const RECRUITMENT_STATUS = pgEnum('RECRUITMENT_STATUS', ['HIRING', 'NOT_HIRING']);
