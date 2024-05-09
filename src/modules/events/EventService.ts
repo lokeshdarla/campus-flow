@@ -1,7 +1,7 @@
 import express from "express";
 import { db } from "../../db/db";
 import { Clubs, Events, Users } from "../../db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import EventType from "../../models/Event";
 
 // type EventType = typeof Events.$inferInsert;
@@ -60,10 +60,37 @@ export const EventService = {
 
   getClubEvents: async (club_id: string) => {
     try {
-      const events = await db.query.Events.findMany({
+      const events = await db.query.Events.findFirst({
         where: (Events, { eq }) => (eq(Events.club_id, club_id))
       });
       return events;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getActiveClubEvents: async (club_id: string) => {
+    try {
+      const event = await db.query.Events.findFirst({
+        where: (Events, { eq }) => (and(eq(Events.club_id, club_id), eq(Events.status, 'NOT_STARTED')))
+      });
+      const clubInfo = await db.query.Clubs.findFirst({
+        where: (Clubs, { eq }) => (eq(Clubs.id, club_id))
+      });
+      const clubDetails = await db.query.Users.findFirst({
+        where: (Users, { eq }) => (eq(Users.id, club_id))
+      });
+
+      const data = {
+        eventInfo: event,
+        clubInfo: {
+          name: clubInfo?.name,
+          description: clubInfo?.description,
+          email: clubDetails?.email,
+          profile_url: clubDetails?.profile_url
+        }
+      }
+      return data;
     } catch (error) {
       throw error;
     }

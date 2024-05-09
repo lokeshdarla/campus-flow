@@ -68,10 +68,18 @@ export const RegistrationService = {
           where: (Events, { eq }) => eq(Events.id, registration.event_id)
         })
 
+        let clubInfo;
+        if (eventInfo) {
+          clubInfo = await db.query.Clubs.findFirst({
+            where: (Clubs, { eq }) => eq(Clubs.id, eventInfo?.club_id)
+          })
+        }
+
         if (studentInfo) {
           const reg = {
-            registration: registration,
-            studentInfo: studentInfo,
+            registration_id: registration.registration_id,
+            club_name: clubInfo?.name,
+            student_id: studentInfo.reg_id,
             eventInfo: eventInfo,
           };
           registrationsInfo.push(reg);
