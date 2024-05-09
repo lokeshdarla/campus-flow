@@ -34,13 +34,7 @@ const links = [
     icon: <IconListCheck size={'1.2rem'} stroke={1.75} />,
     href: '/student/feedback',
     activeLink: '/student/feedback',
-  },
-  {
-    label: 'Personal Info',
-    icon: <IconUser size={'1.2rem'} stroke={1.75} />,
-    href: '/student/personal-info',
-    activeLink: '/student/personal-info',
-  },
+  }
 ]
 
 

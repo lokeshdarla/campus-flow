@@ -7,34 +7,31 @@ const EventForm = () => {
   const [formData, setFormData] = useState<EventCreate>({
     name: '',
     description: '',
-    date: '',
-    start_time: new Date(),
-    end_time: new Date(),
+    start_time: '',
+    end_time: '',
     location: '',
   });
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
-  };
-
-  const calculateMinDate = () => {
-    const minDate = new Date();
-    minDate.setDate(minDate.getDate() + 2);
-    return minDate.toISOString();
-  };
-
-  const calculateMaxDate = () => {
-    const minDate = new Date();
-    minDate.setDate(minDate.getDate() + 30);
-    return minDate.toISOString();
+    if (id == 'start_time' || id == 'end_time') {
+      const new_val = value.replace('T', ' ');
+      setFormData({ ...formData, [id]: new_val });
+    }
+    else
+      setFormData({ ...formData, [id]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const startDate = formData.start_time.toString().split('T')[0];
-    setFormData(prevFormData => ({ ...prevFormData, date: startDate }));
+    const start_time = formData.start_time.replace('T', ' ');
+    const end_time = formData.end_time.replace('T', ' ');
+    setFormData(prevData => ({
+      ...prevData,
+      start_time: start_time,
+      end_time: end_time
+    }));
 
     const accessToken = localStorage.getItem('accessToken');
 
@@ -53,10 +50,11 @@ const EventForm = () => {
     } catch (error) {
       console.error('Error creating event:', error);
     }
+    console.log(formData);
 
-    if (formRef.current) {
-      formRef.current.reset();
-    }
+    // if (formRef.current) {
+    //   formRef.current.reset();
+    // }
   };
 
 
@@ -80,8 +78,7 @@ const EventForm = () => {
           id="start_time"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           required
-          min={calculateMinDate()}
-          max={calculateMaxDate()}
+
           onChange={handleChange}
         />
       </div>

@@ -3,14 +3,17 @@ import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { RegisteredDialog } from "./RegisterCardDialog"
 import { Calendar, MapPin, CheckCircleIcon, Clock } from "lucide-react"
+import { RegistrationData } from "@/constants/constant"
 
-export function RegisteredEventCard() {
+export const RegisteredEventCard: React.FC<{ registration: RegistrationData }> = ({ registration }) => {
+  const start_date = new Date(registration.eventInfo.start_time).toDateString();
+  const start_time = new Date(registration.eventInfo.start_time).toTimeString()
   return (
     <section className="text-gray-900 flex items-center justify-center ">
       <div className="flex rounded-3xl bg-white items-center justify-center  h-40 overflow-y-hidden">
         <div className="h-40 relative  flex items-center justify-center border p-4 rounded-l-3xl">
           <div className="absolute z-10">
-            <RegisteredDialog />
+            <RegisteredDialog registration_id={registration.registration_id} />
           </div>
           <Image width={100} height={100} src={'/qrdemo.webp'} className="h-auto w-auto blur-[1px]" alt="" />
         </div>
@@ -22,21 +25,20 @@ export function RegisteredEventCard() {
 
           <div>
             <div className="flex justify-between items-center">
-              <h1 className="text-xl">Case Study</h1>
-              <Badge variant={'default'}>25 days left</Badge>
+              <h1 className="text-xl">{registration.eventInfo.name}</h1>
             </div>
 
-            <p className="text-sm"> By ACTS SRM Univeristy AP, Vijayawada, Andhra Pradesh, India</p>
+            <p className="text-sm"> By {registration.club_name} SRM Univeristy AP, Vijayawada, Andhra Pradesh, India</p>
           </div>
 
           <div className="flex flex-col md:flex-row text-xs w-full gap-4  justify-between">
             <div className="flex items-center gap-1">
               <Calendar size={15} />
-              <p className="text-xs"> Date: 18/09/2024 </p>
+              <p className="text-xs"> Date: {start_date} </p>
             </div>
             <div className="flex items-center gap-1">
               <Clock size={15} />
-              <p className="text-xs">Time : 12:45 P.M</p>
+              <p className="text-xs">Time : {start_time}</p>
             </div>
             <div className="flex items-center gap-1">
               <MapPin size={15} />

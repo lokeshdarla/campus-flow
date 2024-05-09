@@ -14,19 +14,45 @@ import { FiEdit } from "react-icons/fi";
 import { QRScanner } from "./QR_Scanner"
 
 import { useAuth } from "@/hooks/useAuth";
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { EventData } from "@/constants/constant"
 
 export function ActiveEvent() {
-  const [decoded, setDecoded] = useState('')
-  const [decodeError, setDecodeError] = useState('')
   const { user } = useAuth();
+  const [event, setEvent] = useState<EventData>();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/club-events/active`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+          }
+        );
+        console.log(response.data);
+        setEvent(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const formattedDate = event?.eventInfo.start_time ? new Date(event.eventInfo.start_time).toDateString() : '';
+
+
+
   return (
     <Card className="flex w-full  overflow-hidden items-center justify-center">
 
       <CardContent className="px-10">
         <CardHeader className="flex justify-between gap-4 px-10 items-center md:items-start flex-row pr-10">
           <div className="space-y-2">
-            <CardTitle className="mt-3">Code Clash 3.O</CardTitle>
+            <CardTitle className="px-3">{event?.eventInfo.name}</CardTitle>
             <CardDescription className="hidden md:block">
               By {user?.displayName} SRM Univeristy AP, Vijayawada, Andhra Pradesh, India
             </CardDescription>
@@ -40,16 +66,16 @@ export function ActiveEvent() {
           <div className="md:max-w-2xl pb-3 px-4 flex gap-5">
             <div className="flex items-center gap-2">
               <Calendar size={15} />
-              <p className="text-sm">when: 18-09-2024 </p>
+              <p className="text-sm">when: {formattedDate} </p>
             </div>
             <div className="flex items-center gap-2">
               <MapPin size={15} />
-              <p className="text-sm">where: Mini Auditorium </p>
+              <p className="text-sm">where: {event?.eventInfo.location}</p>
             </div>
           </div>
 
           <div className="px-6">
-            <p>Engage your intellect in our Case Study competition. Teams analyze real-world scenarios, presenting innovative solutions and strategies to industry challenges. Witness the power of critical thinking and creativity as participants showcase their problem-solving prowess. Join us for an enlightening exploration of practical knowledge and ingenuity!</p>
+            <p>{event?.eventInfo.description}</p>
           </div>
 
         </div>

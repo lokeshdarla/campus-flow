@@ -1,4 +1,3 @@
-import { EventCarousel } from '@/components/common/FameCarousel'
 import { EventCard } from '@/components/student/events/EventCard'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -29,17 +28,11 @@ const ExploreEvents = () => {
   }, []);
 
   return (
-    <div className="flex items-start  p-2 gap-20">
-      <div className="flex flex-col items-start justify-center explore_events p-2 gap-2 ">
+    <div className="flex items-center justify-center  p-2 gap-20">
+      <div className="flex flex-col items-center justify-center explore_events p-2 gap-2 ">
         {data.map((event, index) => (
           <EventCard key={index} event={event} />
         ))}
-
-      </div>
-
-      <div className="mt-14 hidden p-2 lg:block">
-
-        <EventCarousel />
       </div>
     </div>
 

@@ -11,7 +11,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Image from "next/image"
-export function RegisteredDialog() {
+interface RegisteredDialogProps {
+  registration_id: string;
+}
+export const RegisteredDialog: React.FC<RegisteredDialogProps> = ({ registration_id }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -20,35 +23,29 @@ export function RegisteredDialog() {
       <DialogContent className=" ">
         <DialogHeader className="flex justify-between items-center flex-row pr-10">
           <div className="space-y-2 flex flex-col items-start">
-            <DialogTitle>Case Study</DialogTitle>
-            <DialogDescription>
-              By ACTS SRM Univeristy AP
-            </DialogDescription>
+            <DialogTitle>Attendace QR</DialogTitle>
           </div>
 
           <Image src={'/srmap_logo.png'} alt="logo" width={75} height={75} />
         </DialogHeader>
         <div className="items-center flex justify-center rounded-lg">
           <QRCodeSVG
-            value={"AP22110011115"}
+            value={registration_id}
             size={300}
             bgColor="#ffffff"
             fgColor="#000000"
             level="L"
             includeMargin={false}
           />
-          {/* <Image src={'/qrdemo.webp'} alt="event-photo" width={400} height={400} /> */}
         </div>
-        <DialogFooter className="sm:justify-start">
+        <DialogFooter className="flex items-center justify-center">
           <DialogClose asChild>
-            <Button variant={'outline'}
-            >
+            <Button variant={'outline'}>
               close
-
             </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   )
 }

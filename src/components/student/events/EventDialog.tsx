@@ -4,8 +4,49 @@ import { toast } from "@/components/ui/use-toast";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { EventData } from "@/constants/constant";
 import Image from "next/image";
+import axios from "axios";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components/common/LoadingState";
+import { Close } from "@radix-ui/react-dialog";
+
 
 export const EventDialog: React.FC<{ event: EventData }> = ({ event }) => {
+  const start_date = new Date(event.eventInfo.start_time);
+
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async () => {
+    setLoading(true)
+    const accessToken = localStorage.getItem('accessToken');
+    console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/event-responses/${event.eventInfo.id}/register-event/`)
+    if (!accessToken) {
+      console.error('Access token not found in localStorage');
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/event-responses/${event.eventInfo.id}/register-event/`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      );
+      toast({
+        title: `Registered to ${event.eventInfo.name}`,
+        description: "See you soon on the day of event",
+      });
+      console.log(response.data);
+    } catch (error) {
+      toast({
+        title: `Already Registered`,
+        description: "See you soon on the day of event",
+      });
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -16,7 +57,7 @@ export const EventDialog: React.FC<{ event: EventData }> = ({ event }) => {
           <div className="space-y-2 flex flex-col text-left items-start">
             <DialogTitle>{event.eventInfo.name}</DialogTitle>
             <DialogDescription>
-              By {event.clubInfo.name}, {event.eventInfo.location}
+              By {event.clubInfo.name}, SRM University Andhra Pradesh.
             </DialogDescription>
           </div>
           {
@@ -32,7 +73,7 @@ export const EventDialog: React.FC<{ event: EventData }> = ({ event }) => {
         <div className="max-w-2xl flex flex-col md:flex-row justify-between">
           <div className="flex items-center gap-2">
             <Calendar size={15} />
-            <p className="text-sm"> when: {event.eventInfo.date}</p>
+            <p className="text-sm"> when: {start_date.toLocaleDateString()}</p>
           </div>
           <div className="flex items-center gap-2">
             <MapPin size={15} />
@@ -45,16 +86,11 @@ export const EventDialog: React.FC<{ event: EventData }> = ({ event }) => {
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button
-              onClick={() => {
-                toast({
-                  title: "Scheduled: Catch up",
-                  description: "Friday, February 10, 2023 at 5:57 PM",
-                });
-              }}
+            {loading ? <LoadingSpinner /> : <Button
+              onClick={handleSubmit}
               type="button" variant="outline" className="text-blue-700">
               Register
-            </Button>
+            </Button>}
           </DialogClose>
         </DialogFooter>
       </DialogContent>
