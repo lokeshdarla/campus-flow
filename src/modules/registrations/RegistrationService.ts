@@ -1,8 +1,6 @@
 import { db } from "../../db/db";
-import { Clubs, EventResponses, Events, Students, Users } from "../../db/schema";
+import { EventResponses, Students } from "../../db/schema";
 import { and, eq } from "drizzle-orm";
-
-type ResponseEvent = typeof EventResponses.$inferInsert;
 
 export const RegistrationService = {
   RegisterEvent: async (event_id: string, student_id: string) => {
@@ -27,17 +25,34 @@ export const RegistrationService = {
     }
   },
 
-  getAllRegistrations: async (event_id: string, club_id: string) => {
+  getAllRegistrations: async (event_id: string) => {
     try {
       const registrations = await db.query.EventResponses.findMany({
         where: (EventResponses, { eq }) => eq(EventResponses.registration_id, event_id)
       });
-      return registrations;
-    }
-    catch (error) {
-      throw (error);
+
+      const registrationsInfo = [];
+      for (const registration of registrations) {
+        const studentInfo = await db.query.Students.findFirst({
+          where: (Students, { eq }) => eq(Students.id, registration.student_id)
+        });
+
+        if (studentInfo) {
+          const reg = {
+            registration: registration,
+            studentInfo: studentInfo
+          };
+          registrationsInfo.push(reg);
+        }
+      }
+
+      return registrationsInfo;
+    } catch (error) {
+      console.error("Error fetching registrations:", error);
+      throw error;
     }
   },
+
 
   markAttendance: async (registration_id: string, student_id: string) => {
 

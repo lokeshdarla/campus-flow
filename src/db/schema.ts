@@ -8,6 +8,7 @@ export const EVENT_REGISTERED_STATUS = pgEnum('EVENT_REGISTERED_STATUS', ['APPLI
 export const RECRUITMENT_STATUS = pgEnum('RECRUITMENT_STATUS', ['HIRING', 'NOT_HIRING']);
 export const RECRUITMENT_APPLICATION_STATUS = pgEnum('RECRUITMENT_APPLICATION_STATUS', ['APPLIED', 'SCHEDULED_INTERVIEW', 'SELECTED', 'REJECTED']);
 export const CLUB_MEMBER_STATUS = pgEnum('CLUB_MEMBER_STATUS', ['MEMBER', 'CO-CONVENER', 'CONVENOR']);
+export const RECRUITMENT_MEMBER_STATUS = pgEnum('RECRUITMENT_MEMBER_STATUS', ['MEMBER', 'CO-CONVENER', 'CONVENOR']);
 
 export const Users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -58,7 +59,7 @@ export const Events = pgTable('Events', {
 export const EventResponses = pgTable('eventResponses', {
   registration_id: uuid('registration_id').primaryKey().defaultRandom(),
   event_id: uuid('event_id').references(() => Events.id).notNull(),
-  student_id: uuid('student_id').references(() => Users.id),
+  student_id: uuid('student_id').references(() => Users.id).notNull(),
   status: EVENT_REGISTERED_STATUS('status'),
   from_club: boolean('from_club'),
   registered_at: timestamp('registered_at'),
@@ -66,7 +67,7 @@ export const EventResponses = pgTable('eventResponses', {
 
 export const Recruitments = pgTable('Recruitments', {
   id: uuid('recruiments').primaryKey().defaultRandom(),
-  club_id: uuid('club_id').references(() => Clubs.id),
+  club_id: uuid('club_id').references(() => Clubs.id).notNull(),
   role: varchar('role').notNull(),
   description: varchar('descriptions').notNull(),
   status: RECRUITMENT_STATUS('status').notNull(),
@@ -74,10 +75,12 @@ export const Recruitments = pgTable('Recruitments', {
   updated_at: timestamp('updated_at')
 })
 
-export const RecruitmentResponses = pgTable('Recruitments', {
+export const RecruitmentResponses = pgTable('RecruitmentResponses', {
   application_id: uuid('application_id').primaryKey().defaultRandom(),
   recruitment_id: uuid('recruitment_id').references(() => Recruitments.id).notNull(),
   student_id: uuid('student_id').references(() => Users.id),
+  question_1: varchar('Why do you think you are eligible for the role').notNull(),
+  question_2: varchar('Any past experiences').notNull(),
   status: RECRUITMENT_APPLICATION_STATUS('status').notNull(),
   applied_at: timestamp('applied_at'),
 })
