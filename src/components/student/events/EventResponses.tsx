@@ -148,7 +148,7 @@ export const EventResponses: React.FC<EventResponsesProps> = ({ event_id }) => {
 
     fetchEventResponses();
     console.log(data);
-  }, [event_id]);
+  }, []);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
