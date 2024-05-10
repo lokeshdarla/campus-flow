@@ -26,7 +26,7 @@ export default function StudentInfoPage() {
       try {
         const accessToken = localStorage.getItem('accessToken')
 
-        const response = await axios.get(`http://localhost:8080/api/getStudentInfo/`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/getStudentInfo/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
