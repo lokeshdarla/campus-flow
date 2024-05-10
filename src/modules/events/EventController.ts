@@ -98,6 +98,12 @@ EventRouter.get('/club-events', async (req: Request, res: Response) => {
   res.status(200).json(events)
 });
 
+EventRouter.get('/club-events/active', async (req: Request, res: Response) => {
+  const user = res.locals.user;
+  const events = await EventService.getActiveClubEvents(user.id);
+  res.status(200).json(events)
+});
+
 
 EventRouter.get('/all-events', async (req: Request, res: Response) => {
   const events = await EventService.getAllEvents();
