@@ -46,6 +46,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/server", (req: Request, res: Response) => {
   res.send({
+    message: "Hello World",
+  });
+});
+
+app.get("/server", (req: Request, res: Response) => {
+  res.send({
     message: "Server is running",
   });
 });
