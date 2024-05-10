@@ -95,7 +95,7 @@ export default function LoginPage() {
               By continuing, you are indicating that you accept our Terms of
               Service and Privacy Policy.
             </p>
-            <p className='px-8 text-center text-sm text-muted-foreground'>Made by Lokesh Naga Sai</p>
+            <p className='px-8 text-center text-sm text-muted-foreground'>Made by Team Telos</p>
           </div>
         </div>
       </div>
